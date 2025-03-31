@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-
 import { 
   Bell, Search, Settings, Menu, Activity, BarChart2, Clock,
   ChevronDown, AlertTriangle, Layers, Home, RefreshCw, 
@@ -16,7 +15,7 @@ const HomePage = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [selectedService, setSelectedService] = useState('All Services');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab] = useState('dashboard');
   
   // Refs for handling outside clicks
   const serviceDropdownRef = useRef(null);
@@ -73,8 +72,7 @@ const HomePage = () => {
   
   
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      // Add null checks and type assertions to ensure contains method exists
+    const handleClickOutside = () => {
       if (serviceDropdownRef.current ) {
         setShowServiceDropdown(false);
       }

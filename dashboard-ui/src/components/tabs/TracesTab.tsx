@@ -1,4 +1,3 @@
-// tabs/TracesTab.tsx
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Clock } from 'lucide-react';
@@ -7,7 +6,7 @@ import { Trace } from '@/pages/ApiDetail';
 
 interface DetailedData {
   traces: Trace[];
-  // Other properties from detailedData not used in this component
+
 }
 
 interface TracesTabProps {

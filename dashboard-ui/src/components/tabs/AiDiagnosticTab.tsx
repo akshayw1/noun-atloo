@@ -2,7 +2,7 @@
 import { motion } from 'framer-motion';
 import { 
     AlertTriangle,
-  CheckCircle, Clock, Loader2, XCircle 
+  CheckCircle, Clock, Loader2 
 } from 'lucide-react';
 
 const AiDiagnosticTab = ({ 

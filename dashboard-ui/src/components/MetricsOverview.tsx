@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import { getTrendIndicator } from '@/pages/ApiDetail';
 
-const MetricsOverview = ({ api, apiHealth, remediationApplied, id, detailedData }:any) => {
+const MetricsOverview = ({ api, remediationApplied, id, detailedData }:any) => {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}

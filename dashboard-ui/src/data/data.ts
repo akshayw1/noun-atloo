@@ -83,7 +83,7 @@ export const mockData = {
       errorRateTrend: -0.2,
       latency: 145,
       latencyTrend: -2.7,
-      requestHistory: [...Array(10)].map((_, i) => ({ value: 3000 + (Math.random() * 300) }))
+      requestHistory: [...Array(10)].map((_, i) => ({ value: 3000+i  + (Math.random() * 300) }))
     },
     {
       id: 5,
@@ -111,7 +111,7 @@ export const mockData = {
       errorRateTrend: -0.8,
       latency: 65,
       latencyTrend: -3.7,
-      requestHistory: [...Array(10)].map((_, i) => ({ value: 3200 + (Math.random() * 300) }))
+      requestHistory: [...Array(10)].map((_, i) => ({ value: 3200 + i + (Math.random() * 300) }))
     },
     {
       id: 7,
@@ -139,7 +139,7 @@ export const mockData = {
       errorRateTrend: -0.3,
       latency: 92,
       latencyTrend: -1.5,
-      requestHistory: [...Array(10)].map((_, i) => ({ value: 1500 + (Math.random() * 200) }))
+      requestHistory: [...Array(10)].map((_, i) => ({ value: 1500 + i+  (Math.random() * 200) }))
     },
     {
       id: 9,

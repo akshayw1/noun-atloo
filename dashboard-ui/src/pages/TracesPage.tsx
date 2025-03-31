@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { 
   Search, 
   Download, CheckCircle, XCircle, RefreshCw,
-  AlertTriangle, AlertCircle, Plus, Filter, Clock,
-  Database, Server
+  AlertTriangle,
+  Database
 } from 'lucide-react';
 import { mockData } from '@/data/data'; 
 import { useNavigate } from 'react-router-dom';

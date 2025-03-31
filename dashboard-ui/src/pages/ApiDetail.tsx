@@ -1,4 +1,3 @@
-// ApiDetail.tsx - Main Component
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { mockData } from '@/data/data';
@@ -106,7 +105,7 @@ const ApiDetail: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<string>(initTab);
   const [selectedTimeRange, setSelectedTimeRange] = useState<string>('24h');
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
-  const [showAIRemediation, setShowAIRemediation] = useState<boolean>(false);
+  const [setShowAIRemediation] = useState<boolean>(false);
   const [remediationState, setRemediationState] = useState<RemediationState>({
     stage: 'initial',
     progress: 0
