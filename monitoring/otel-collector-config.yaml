@@ -1,0 +1,57 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 1s
+    send_batch_size: 1024
+  
+  attributes:
+    actions:
+      - key: environment
+        value: production
+        action: upsert
+  
+  resource:
+    attributes:
+      - key: service.namespace
+        value: atlan
+        action: upsert
+
+exporters:
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    namespace: ""  
+    send_timestamps: true  
+    metric_expiration: 180m  
+  
+  # Use the otlp exporter instead of jaeger
+  otlp:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+  
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [batch, attributes, resource]
+      exporters: [prometheus]
+    
+    traces:
+      receivers: [otlp]
+      processors: [batch, attributes, resource]
+      exporters: [otlp]  
+    
+    logs:
+      receivers: [otlp]
+      processors: [batch, attributes, resource]
+      exporters: [debug]

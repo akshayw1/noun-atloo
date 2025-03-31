@@ -1,0 +1,132 @@
+version: '3.8'
+
+services:
+  # OpenTelemetry Collector
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: otel-collector
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+      - "8889:8889"   # Prometheus metrics exporter
+    networks:
+      - observability-network
+
+  # Prometheus for metrics
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+    networks:
+      - observability-network
+
+  # Jaeger for distributed tracing
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    ports:
+      - "16686:16686"   # UI
+      - "14250:14250"   # Model used for collector
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - observability-network
+
+  # Elasticsearch for logs
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - observability-network
+
+  # Kibana for log visualization
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.14.0
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - observability-network
+
+  # Users service
+  users-service:
+    build: ../services/user-service
+    container_name: users-service
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - SERVICE_NAME=users-service
+      - SERVICE_VERSION=1.0.0
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+    depends_on:
+      - otel-collector
+    networks:
+      - observability-network
+
+  # Dashboard API
+  dashboard-api:
+    build: ../dashboard-api
+    container_name: dashboard-api
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - PROMETHEUS_URL=http://prometheus:9090
+      - JAEGER_URL=http://jaeger:16686
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - prometheus
+      - jaeger
+      - elasticsearch
+    networks:
+      - observability-network
+
+  # # Dashboard UI
+  # dashboard-ui:
+  #   build: ../dashboard-ui
+  #   container_name: dashboard-ui
+  #   restart: always
+  #   ports:
+  #     - "8080:80"
+  #   environment:
+  #     - REACT_APP_API_URL=http://localhost:3001
+  #   depends_on:
+  #     - dashboard-api
+  #   networks:
+  #     - observability-network
+
+volumes:
+  prometheus-data:
+  elasticsearch-data:
+
+networks:
+  observability-network:
+    driver: bridge
