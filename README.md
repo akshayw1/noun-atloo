@@ -1,4 +1,10 @@
 #  Atlan Platform Observability Solution
+![image](https://github.com/user-attachments/assets/a03c6397-0735-41ae-9899-9b994b0c43dd)
+
+
+[Live Demo Dashboard](https://atlanto-island-vfl1.vercel.app/)  
+
+*Note: This dashboard is for demonstration purposes only. The data presented is mock data and does not reflect real system metrics.*
 
 ## 1. Introduction
 
