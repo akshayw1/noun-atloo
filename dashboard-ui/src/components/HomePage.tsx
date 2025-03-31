@@ -127,7 +127,7 @@ const navigate = useNavigate()
           <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : ''}`}>
             <Activity className="h-6 w-6 text-blue-600" />
             {!sidebarCollapsed && (
-              <span className="ml-2 font-bold text-lg">Atlantico</span>
+              <span className="ml-2 font-bold text-lg">Atlanto Island</span>
             )}
           </div>
           <button 
