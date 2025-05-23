@@ -1,4 +1,4 @@
-#  Atlan Platform Observability Solution
+#   Platform Observability Solution
 ![image](https://github.com/user-attachments/assets/a03c6397-0735-41ae-9899-9b994b0c43dd)
 
 
